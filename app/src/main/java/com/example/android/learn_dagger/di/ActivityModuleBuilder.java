@@ -1,6 +1,8 @@
 package com.example.android.learn_dagger.di;
 
-import com.example.android.learn_dagger.AuthActivity;
+import com.example.android.learn_dagger.di.auth.AuthModule;
+import com.example.android.learn_dagger.di.auth.AuthViewModelsModule;
+import com.example.android.learn_dagger.ui.auth.AuthActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -13,7 +15,11 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivityModuleBuilder {
 
-    @ContributesAndroidInjector
+    // @ContributesAndroidInjector automatically creates a subcomponent
+    // This specifies that AuthViewModels can only be used by this activity being provided
+    @ContributesAndroidInjector(
+            modules = {AuthViewModelsModule.class, AuthModule.class}
+    )
     abstract AuthActivity provideAuthActivity();
 
 
