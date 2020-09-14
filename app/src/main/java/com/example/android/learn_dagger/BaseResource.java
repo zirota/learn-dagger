@@ -3,12 +3,12 @@ package com.example.android.learn_dagger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.android.learn_dagger.ui.auth.AuthResource;
-
-public abstract class BaseResource<T> {
+// A typical structure of a network resource according to Android best practices
+public class BaseResource<T> {
 
     @NonNull
-    public T status;
+    public Status status;
+
 
     @Nullable
     public T data;
@@ -16,21 +16,23 @@ public abstract class BaseResource<T> {
     @Nullable
     public String message;
 
-    public static <T> AuthResource<T> authenticated (@Nullable T data) {
-        return new AuthResource<>(AuthResource.AuthStatus.AUTHENTICATED, data, null);
+    public BaseResource(@NonNull Status status, @Nullable T data, @Nullable String message) {
+        this.status = status;
+        this.data = data;
+        this.message = message;
     }
 
-    public static <T> AuthResource<T> error(@NonNull String msg, @Nullable T data) {
-        return new AuthResource<>(AuthResource.AuthStatus.ERROR, data, msg);
+    public static <T> BaseResource<T> success(@Nullable T data) {
+        return new BaseResource<>(Status.SUCCESS, data, null);
     }
 
-    public static <T> AuthResource<T> loading(@Nullable T data) {
-        return new AuthResource<>(AuthResource.AuthStatus.LOADING, data, null);
+    public static <T> BaseResource<T> error(@NonNull String msg, @Nullable T data) {
+        return new BaseResource<>(Status.ERROR, data, msg);
     }
 
-    public static <T> AuthResource<T> logout () {
-        return new AuthResource<>(AuthResource.AuthStatus.NOT_AUTHENTICATED, null, null);
+    public static <T> BaseResource<T> loading(@Nullable T data) {
+        return new BaseResource<>(Status.LOADING, data, null);
     }
 
-    public enum AuthStatus { AUTHENTICATED, ERROR, LOADING, NOT_AUTHENTICATED}
+    public enum Status { SUCCESS, ERROR, LOADING }
 }

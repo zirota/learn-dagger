@@ -1,24 +1,23 @@
 package com.example.android.learn_dagger.ui.auth;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.RequestManager;
 import com.example.android.learn_dagger.R;
 import com.example.android.learn_dagger.databinding.ActivityAuthBinding;
 import com.example.android.learn_dagger.di.ViewModelProviderFactory;
-import com.example.android.learn_dagger.models.User;
+import com.example.android.learn_dagger.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -55,41 +54,45 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
         subscribeObservers();
     }
 
-    // This method will start observing the live data that exists in the ViewModel when the Activity is created
-    // To tell what to observe, return the LiveData that exists in the ViewModel
     public void subscribeObservers() {
-      viewModel.observeUser().observe(this, new Observer<AuthResource<User>>() {
-          @Override
-          public void onChanged(
-                  AuthResource<User> userAuthResource
-          ) {
-              if (userAuthResource != null) {
-                  switch (userAuthResource.status) {
-                      case LOADING:{
-                          showProgressBar(true);
-                          break;
-                      }
-                      case AUTHENTICATED:{
-                          showProgressBar(false);
-                          Log.d(TAG, "onChange: LOGIN SUCCESS: " + userAuthResource.data.getEmail());
-                      }
-                      case ERROR:{
-                          showProgressBar(false);
-                          Toast.makeText(AuthActivity.this, userAuthResource.message + "Did you enter a number between 1 to 10?", Toast.LENGTH_SHORT).show();
-                          break;
-                      }
-                      case NOT_AUTHENTICATED: {
-                          showProgressBar(false);
-                          break;
-                      }
+      viewModel.observeUser().observe(this, userAuthResource -> {
+          if (userAuthResource != null) {
+              switch (userAuthResource.status) {
+                  case LOADING:{
+                      showProgressBar(true);
+                      break;
+                  }
+                  case AUTHENTICATED:{
+                      showProgressBar(false);
+                      onLoginSuccess();
+                      Log.d(TAG, "LOGIN SUCCESS: " + userAuthResource.data.getEmail());
+                      break;
+                  }
+                  case ERROR:{
+                      showProgressBar(false);
+                      Toast.makeText(AuthActivity.this, userAuthResource.message + "did you enter a number between 1 to 10?", Toast.LENGTH_SHORT).show();
+                      break;
+                  }
+                  case NOT_AUTHENTICATED: {
+                      showProgressBar(false);
+                      break;
                   }
               }
           }
       });
     }
 
+    private void onLoginSuccess() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
     private void setLogo(ActivityAuthBinding binding) {
-        requestManager.load(logo).into((ImageView) binding.loginLogo);
+        requestManager.load(logo).into(binding.loginLogo);
+    }
+
+    private void setupViewModel() {
+        viewModel = new ViewModelProvider(this, factory).get(AuthViewModel.class);
     }
 
     private void showProgressBar(boolean isVisible) {
@@ -98,10 +101,6 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
         } else {
             progressBar.setVisibility(View.GONE);
         }
-    }
-
-    private void setupViewModel() {
-        viewModel = new ViewModelProvider(this, factory).get(AuthViewModel.class);
     }
 
     @Override

@@ -2,7 +2,10 @@ package com.example.android.learn_dagger.di;
 
 import com.example.android.learn_dagger.di.auth.AuthModule;
 import com.example.android.learn_dagger.di.auth.AuthViewModelsModule;
+import com.example.android.learn_dagger.di.main.MainFragmentModuleBuilder;
+import com.example.android.learn_dagger.di.main.MainViewModelsModule;
 import com.example.android.learn_dagger.ui.auth.AuthActivity;
+import com.example.android.learn_dagger.ui.main.MainActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -21,6 +24,9 @@ public abstract class ActivityModuleBuilder {
             modules = {AuthViewModelsModule.class, AuthModule.class}
     )
     abstract AuthActivity provideAuthActivity();
+
+    @ContributesAndroidInjector(modules = {MainFragmentModuleBuilder.class, MainViewModelsModule.class})
+    abstract MainActivity provideMainActivity();
 
 
 }

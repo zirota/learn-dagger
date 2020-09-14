@@ -3,6 +3,10 @@ package com.example.android.learn_dagger.ui.auth;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+// This basically acts a wrapper class
+// It wraps across some object of type T (e.g. User)
+// This provides the ability of adding supplementary states to the object when making
+// a request. Then, changing the state of the app accordingly to the object's status.
 public class AuthResource<T> {
 
     @NonNull

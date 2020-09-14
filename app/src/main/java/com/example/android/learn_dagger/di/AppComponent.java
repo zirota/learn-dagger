@@ -3,6 +3,7 @@ package com.example.android.learn_dagger.di;
 import android.app.Application;
 
 import com.example.android.learn_dagger.BaseApplication;
+import com.example.android.learn_dagger.SessionManager;
 
 import javax.inject.Singleton;
 
@@ -21,6 +22,8 @@ import dagger.android.AndroidInjector;
         }
 )
 public interface AppComponent extends AndroidInjector<BaseApplication> {
+
+    SessionManager sessionManager();
 
     @Component.Builder
     interface Builder{
