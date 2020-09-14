@@ -15,6 +15,12 @@
             android:id="@+id/postScreen"
             android:name="com.example.android.learn_dagger.ui.main.posts.PostFragment"
             android:label="@string/posts"
-            tools:layout="@layout/fragment_posts"/>
+            tools:layout="@layout/fragment_posts">
+        <action
+                android:id="@+id/action_postScreen_to_profileScreen"
+                app:destination="@id/profileScreen"
+                />
+
+    </fragment>
 
 </navigation>
