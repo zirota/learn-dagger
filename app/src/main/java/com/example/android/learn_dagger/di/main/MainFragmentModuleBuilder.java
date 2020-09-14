@@ -1,5 +1,6 @@
 package com.example.android.learn_dagger.di.main;
 
+import com.example.android.learn_dagger.ui.main.posts.PostFragment;
 import com.example.android.learn_dagger.ui.main.profile.ProfileFragment;
 
 import dagger.Module;
@@ -10,4 +11,7 @@ public abstract class MainFragmentModuleBuilder {
 
     @ContributesAndroidInjector
     abstract ProfileFragment provideProfileFragment();
+
+    @ContributesAndroidInjector
+    abstract PostFragment providePostFragment();
 }

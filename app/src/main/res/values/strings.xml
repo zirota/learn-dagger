@@ -20,4 +20,6 @@
     <string name="shr_dresses_label">Dresses</string>
     <string name="shr_account_label">My Account</string>
     <string name="logout">Logout</string>
+    <string name="profile">Profile</string>
+    <string name="posts">Posts</string>
 </resources>
